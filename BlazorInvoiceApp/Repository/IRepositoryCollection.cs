@@ -1,12 +1,11 @@
-﻿namespace BlazorInvoiceApp.Repository
-{
-    public interface IRepositoryCollection : IDisposable
-    {
-        IInvoiceRepository Invoice { get; }
-        ICustomerRepository Customer { get; }
-        IInvoiceTermsRepository InvoiceTerms { get; }
-        IInvoiceLineItemRepository InvoiceLineItem { get; }
+﻿namespace BlazorInvoiceApp.Repository;
 
-        Task<int> Save();
-    }
+public interface IRepositoryCollection : IDisposable
+{
+    IInvoiceRepository Invoice { get; }
+    ICustomerRepository Customer { get; }
+    IInvoiceTermsRepository InvoiceTerms { get; }
+    IInvoiceLineItemRepository InvoiceLineItem { get; }
+
+    Task<int> Save();
 }

@@ -3,21 +3,21 @@ using BlazorInvoiceApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace BlazorInvoiceApp.Repository
+namespace BlazorInvoiceApp.Repository;
+
+public class RepositoryCollection : IRepositoryCollection
 {
-    public class RepositoryCollection : IRepositoryCollection
+    private readonly ApplicationDbContext context;
+    private readonly IMapper mapper;
+
+    public IInvoiceRepository Invoice { get; private set; }
+    public ICustomerRepository Customer { get; private set; }
+    public IInvoiceTermsRepository InvoiceTerms { get; private set; }
+    public IInvoiceLineItemRepository InvoiceLineItem { get; private set; }
+
+
+    public RepositoryCollection(IDbContextFactory<ApplicationDbContext> dbFactory, IMapper mapper)
     {
-        private readonly ApplicationDbContext context;
-        private readonly IMapper mapper;
-
-        public IInvoiceRepository Invoice { get; private set; }
-        public ICustomerRepository Customer { get; private set; }
-        public IInvoiceTermsRepository InvoiceTerms { get; private set; }
-        public IInvoiceLineItemRepository InvoiceLineItem { get; private set; }
-
-
-        public RepositoryCollection(IDbContextFactory<ApplicationDbContext> dbFactory, IMapper mapper)
-        {
             this.context = dbFactory.CreateDbContext();
             this.mapper = mapper;
             this.Invoice = new InvoiceRepository(context, mapper);
@@ -26,13 +26,13 @@ namespace BlazorInvoiceApp.Repository
             this.InvoiceLineItem = new InvoiceLineItemRepository(context, mapper);
         }
 
-        public void Dispose()
-        {
+    public void Dispose()
+    {
             context.Dispose();
         }
 
-        public async Task<int> Save()
-        {
+    public async Task<int> Save()
+    {
             try
             {
                 return await context.SaveChangesAsync();
@@ -62,5 +62,4 @@ namespace BlazorInvoiceApp.Repository
             return 0;
         }
 
-    }
 }

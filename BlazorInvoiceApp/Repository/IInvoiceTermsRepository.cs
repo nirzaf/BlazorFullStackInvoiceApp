@@ -2,10 +2,9 @@
 using BlazorInvoiceApp.DTOS;
 using System.Security.Claims;
 
-namespace BlazorInvoiceApp.Repository
+namespace BlazorInvoiceApp.Repository;
+
+public interface IInvoiceTermsRepository : IGenericOwnedRepository<InvoiceTerms, InvoiceTermsDTO>
 {
-    public interface IInvoiceTermsRepository : IGenericOwnedRepository<InvoiceTerms, InvoiceTermsDTO>
-    {
-        public Task Seed(ClaimsPrincipal User);
-    }
+    public Task Seed(ClaimsPrincipal User);
 }

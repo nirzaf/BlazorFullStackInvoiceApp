@@ -1,7 +1,6 @@
-﻿namespace BlazorInvoiceApp.DTOS
+﻿namespace BlazorInvoiceApp.DTOS;
+
+public interface IOwnedDTO
 {
-    public interface IOwnedDTO
-    {
-        public string UserId { get; set; }
-    }
+    public string UserId { get; set; }
 }

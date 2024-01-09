@@ -1,7 +1,6 @@
-﻿namespace BlazorInvoiceApp.DTOS
+﻿namespace BlazorInvoiceApp.DTOS;
+
+public interface IDTO
 {
-    public interface IDTO
-    {
-        public string Id { get; set; }
-    }
+    public string Id { get; set; }
 }

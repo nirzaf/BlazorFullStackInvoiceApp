@@ -11,16 +11,16 @@ using Moq;
 using Radzen;
 using System.Security.Claims;
 
-namespace BlazorInvoiceAppTests
+namespace BlazorInvoiceAppTests;
+
+public class SetupCustomersComponentTests : TestContext
 {
-    public class SetupCustomersComponentTests : TestContext
+    public SetupCustomersComponentTests()
     {
-        public SetupCustomersComponentTests()
-        {
             SetupEnvironment();
         }
-        private void SetupEnvironment()
-        {
+    private void SetupEnvironment()
+    {
             Claim[] claims = {
                     new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", "53de24b2-187c-4a67-adac-210534db81f3")
                 };
@@ -52,9 +52,9 @@ namespace BlazorInvoiceAppTests
 
         }
 
-        [Fact]
-        public void SetupCustomersComponentAddTest()
-        {
+    [Fact]
+    public void SetupCustomersComponentAddTest()
+    {
 
 
             var cut = RenderComponent<CustomerSetupComponent>();
@@ -85,9 +85,9 @@ namespace BlazorInvoiceAppTests
         }
 
 
-        [Fact]
-        public void SetupCustomersComponentModifyTest()
-        {
+    [Fact]
+    public void SetupCustomersComponentModifyTest()
+    {
 
 
             var cut = RenderComponent<CustomerSetupComponent>();
@@ -118,9 +118,9 @@ namespace BlazorInvoiceAppTests
 
         }
 
-        [Fact]
-        public void SetupCustomersComponentDeleteTest()
-        {
+    [Fact]
+    public void SetupCustomersComponentDeleteTest()
+    {
             //SetupEnvironment();
 
             var cut = RenderComponent<CustomerSetupComponent>();
@@ -137,8 +137,8 @@ namespace BlazorInvoiceAppTests
             cut.Find("span[title='Test Customer 3']");
         }
 
-        private void InitData(ApplicationDbContext context)
-        {
+    private void InitData(ApplicationDbContext context)
+    {
 
             if (context != null)
             {
@@ -195,5 +195,4 @@ namespace BlazorInvoiceAppTests
                 context.SaveChanges();
             }
         }
-    }
 }

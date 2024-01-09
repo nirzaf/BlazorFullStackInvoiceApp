@@ -1,6 +1,5 @@
-﻿namespace BlazorInvoiceApp.Repository 
+﻿namespace BlazorInvoiceApp.Repository;
+
+public class RepositoryAddException : Exception
 {
-    public class RepositoryAddException : Exception
-    {
-    }
 }

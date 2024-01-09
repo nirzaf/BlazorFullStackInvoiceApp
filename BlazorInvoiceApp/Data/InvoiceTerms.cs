@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BlazorInvoiceApp.Data
+namespace BlazorInvoiceApp.Data;
+
+public class InvoiceTerms : IEntity, IOwnedEntity
 {
-    public class InvoiceTerms : IEntity, IOwnedEntity
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
 
-        public string UserId { get; set; } = null!;
-        public IdentityUser? User { get; set; } = null!;
+    public string UserId { get; set; } = null!;
+    public IdentityUser? User { get; set; } = null!;
 
-        public string Name { get; set; } = String.Empty;
-    }
+    public string Name { get; set; } = String.Empty;
 }

@@ -1,7 +1,6 @@
-﻿namespace BlazorInvoiceApp.Data
+﻿namespace BlazorInvoiceApp.Data;
+
+public interface IEntity
 {
-    public interface IEntity
-    {
-        public string Id { get; set; }
-    }
+    public string Id { get; set; }
 }

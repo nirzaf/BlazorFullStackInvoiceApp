@@ -1,6 +1,5 @@
-﻿namespace BlazorInvoiceApp.Repository
+﻿namespace BlazorInvoiceApp.Repository;
+
+public class RepositoryDeleteException : Exception
 {
-    public class RepositoryDeleteException : Exception
-    {
-    }
 }

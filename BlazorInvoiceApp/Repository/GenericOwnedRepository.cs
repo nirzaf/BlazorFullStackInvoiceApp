@@ -6,31 +6,31 @@ using System.Linq.Expressions;
 using System.Linq;
 using System.Security.Claims;
 
-namespace BlazorInvoiceApp.Repository
+namespace BlazorInvoiceApp.Repository;
+
+public class GenericOwnedRepository<TEntity, TDTO> : IGenericOwnedRepository<TEntity, TDTO>
+    where TEntity : class, IEntity, IOwnedEntity
+    where TDTO : class, IDTO, IOwnedDTO
 {
-    public class GenericOwnedRepository<TEntity, TDTO> : IGenericOwnedRepository<TEntity, TDTO>
-         where TEntity : class, IEntity, IOwnedEntity
-         where TDTO : class, IDTO, IOwnedDTO
+    public readonly ApplicationDbContext context;
+    public readonly IMapper mapper;
+    public GenericOwnedRepository(ApplicationDbContext context, IMapper mapper)
     {
-        public readonly ApplicationDbContext context;
-        public readonly IMapper mapper;
-        public GenericOwnedRepository(ApplicationDbContext context, IMapper mapper)
-        {
             this.context = context;
             this.mapper = mapper;
         }
         
         
-        protected string? getMyUserId(ClaimsPrincipal User)
-        {
+    protected string? getMyUserId(ClaimsPrincipal User)
+    {
             Claim? uid = User?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
             if (uid is not null)
                 return uid.Value;
             else
                 return null;
         }
-        public virtual async Task<List<TDTO>> GetAllMine(ClaimsPrincipal User)
-        {
+    public virtual async Task<List<TDTO>> GetAllMine(ClaimsPrincipal User)
+    {
             string? userid = getMyUserId(User);
             if (userid is not null)
             {
@@ -45,8 +45,8 @@ namespace BlazorInvoiceApp.Repository
             }
         }
 
-        public virtual async Task<TDTO> GetMineById(ClaimsPrincipal User, string id)
-        {
+    public virtual async Task<TDTO> GetMineById(ClaimsPrincipal User, string id)
+    {
             string? userid = getMyUserId(User);
             if (userid is not null)
             {
@@ -62,8 +62,8 @@ namespace BlazorInvoiceApp.Repository
 
         }
 
-        public virtual async Task<TDTO> UpdateMine(ClaimsPrincipal User, TDTO dto)
-        {
+    public virtual async Task<TDTO> UpdateMine(ClaimsPrincipal User, TDTO dto)
+    {
             string? userid = getMyUserId(User);
             if (userid is not null)
             {
@@ -89,8 +89,8 @@ namespace BlazorInvoiceApp.Repository
             }
         }
 
-        public virtual async Task<bool> DeleteMine(ClaimsPrincipal User, string id)
-        {
+    public virtual async Task<bool> DeleteMine(ClaimsPrincipal User, string id)
+    {
             string? userid = getMyUserId(User);
             if (userid is not null)
             {
@@ -112,8 +112,8 @@ namespace BlazorInvoiceApp.Repository
 
         }
 
-        public virtual async Task<string> AddMine(ClaimsPrincipal User, TDTO dto)
-        {
+    public virtual async Task<string> AddMine(ClaimsPrincipal User, TDTO dto)
+    {
             string? userid = getMyUserId(User);
             if (userid is not null)
             {
@@ -130,8 +130,8 @@ namespace BlazorInvoiceApp.Repository
             }
         }
 
-        protected async Task<List<TDTO>> GenericQuery(ClaimsPrincipal User, Expression<Func<TEntity, bool>>? expression, List<Expression<Func<TEntity, object>>> includes)
-        {
+    protected async Task<List<TDTO>> GenericQuery(ClaimsPrincipal User, Expression<Func<TEntity, bool>>? expression, List<Expression<Func<TEntity, object>>> includes)
+    {
             string? userid = getMyUserId(User);
             if (userid is not null)
             {
@@ -158,5 +158,4 @@ namespace BlazorInvoiceApp.Repository
         }
 
 
-    }
 }

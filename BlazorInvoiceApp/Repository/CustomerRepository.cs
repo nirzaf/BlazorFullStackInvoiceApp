@@ -4,15 +4,15 @@ using BlazorInvoiceApp.DTOS;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace BlazorInvoiceApp.Repository
-{
-    public class CustomerRepository : GenericOwnedRepository<Customer, CustomerDTO>, ICustomerRepository
-    {
-        public CustomerRepository(ApplicationDbContext context, IMapper mapper) 
-            : base(context, mapper) { }
+namespace BlazorInvoiceApp.Repository;
 
-        public async Task Seed(ClaimsPrincipal User)
-        {
+public class CustomerRepository : GenericOwnedRepository<Customer, CustomerDTO>, ICustomerRepository
+{
+    public CustomerRepository(ApplicationDbContext context, IMapper mapper) 
+        : base(context, mapper) { }
+
+    public async Task Seed(ClaimsPrincipal User)
+    {
             string? userid = getMyUserId(User);
             if (userid is not null)
             {
@@ -29,5 +29,4 @@ namespace BlazorInvoiceApp.Repository
             }
             return;
         }
-    }
 }
