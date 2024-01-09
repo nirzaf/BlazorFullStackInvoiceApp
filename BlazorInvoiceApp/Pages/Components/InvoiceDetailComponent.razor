@@ -231,7 +231,7 @@
             if (found)
             {
                 await repo.Save();
-                this.lineitems = await repo.InvoiceLineItem.GetAllMine(auth.User);
+                lineitems = await repo.InvoiceLineItem.GetAllMine(auth.User);
                 await lineitemsGrid!.Reload();
             }
             else
@@ -265,7 +265,7 @@
         lineitem.InvoiceId = Id;
         lineitem.Id = await repo.InvoiceLineItem.AddMine(auth.User, lineitem);
         await repo.Save();
-        this.lineitems = await repo.InvoiceLineItem.GetAllByInvoiceId(auth.User, Id);
+        lineitems = await repo.InvoiceLineItem.GetAllByInvoiceId(auth.User, Id);
         UpdateTotals();
     }
 }

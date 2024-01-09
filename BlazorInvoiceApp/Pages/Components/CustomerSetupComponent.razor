@@ -95,7 +95,7 @@
                 await repo.Customer.Seed(auth.User);
                 await repo.Save();
 
-                this.customers = await repo.Customer.GetAllMine(auth.User);
+                customers = await repo.Customer.GetAllMine(auth.User);
                 await customersGrid!.Reload();
             }
             else
@@ -123,7 +123,7 @@
         AuthenticationState auth = await authstate.GetAuthenticationStateAsync();
         customer.Id = await repo.Customer.AddMine(auth.User, customer);
         await repo.Save();
-        this.customers = await repo.Customer.GetAllMine(auth.User);
+        customers = await repo.Customer.GetAllMine(auth.User);
         customerToInsert = null;
     }
 

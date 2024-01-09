@@ -10,7 +10,7 @@ public class InvoiceTermsRepository : GenericOwnedRepository<InvoiceTerms, Invoi
 {
     public InvoiceTermsRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper) { }
 
-    public async Task Seed(ClaimsPrincipal User)
+    public async Task Seed(ClaimsPrincipal? User)
     {
             string? userid = getMyUserId(User);
             if (userid is not null)

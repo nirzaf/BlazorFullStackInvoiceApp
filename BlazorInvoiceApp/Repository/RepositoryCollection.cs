@@ -18,12 +18,12 @@ public class RepositoryCollection : IRepositoryCollection
 
     public RepositoryCollection(IDbContextFactory<ApplicationDbContext> dbFactory, IMapper mapper)
     {
-            this.context = dbFactory.CreateDbContext();
+            context = dbFactory.CreateDbContext();
             this.mapper = mapper;
-            this.Invoice = new InvoiceRepository(context, mapper);
-            this.Customer = new CustomerRepository(context, mapper);
-            this.InvoiceTerms = new InvoiceTermsRepository(context, mapper);
-            this.InvoiceLineItem = new InvoiceLineItemRepository(context, mapper);
+            Invoice = new InvoiceRepository(context, mapper);
+            Customer = new CustomerRepository(context, mapper);
+            InvoiceTerms = new InvoiceTermsRepository(context, mapper);
+            InvoiceLineItem = new InvoiceLineItemRepository(context, mapper);
         }
 
     public void Dispose()
@@ -47,16 +47,16 @@ public class RepositoryCollection : IRepositoryCollection
                         item.State = EntityState.Unchanged;
                         throw new RepositoryUpdateException();
                     }
-                    else if (item.State == EntityState.Deleted)
+
+                    if (item.State == EntityState.Deleted)
                     {
                         item.State = EntityState.Unchanged;
                         throw new RepositoryDeleteException();
                     }
-                    else if (item.State == EntityState.Added)
+                    if (item.State == EntityState.Added)
                     {
                         throw new RepositoryAddException();
                     }
-
                 }
             }
             return 0;

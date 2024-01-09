@@ -10,7 +10,7 @@ public class InvoiceRepository : GenericOwnedRepository<Invoice, InvoiceDTO>, II
 {
     public InvoiceRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper) { }
 
-    public async Task DeleteWithLineItems(ClaimsPrincipal User, string invoiceid)
+    public async Task DeleteWithLineItems(ClaimsPrincipal? User, string invoiceid)
     {
             string? userid = getMyUserId(User);
             var lineitems = await context.InvoicesLineItems.Where(i => i.InvoiceId == invoiceid && i.UserId == userid).ToListAsync();
@@ -25,7 +25,7 @@ public class InvoiceRepository : GenericOwnedRepository<Invoice, InvoiceDTO>, II
             }
         }
 
-    public async Task<List<InvoiceDTO>> GetAllMineFlat(ClaimsPrincipal User)
+    public async Task<List<InvoiceDTO>> GetAllMineFlat(ClaimsPrincipal? User)
     {
             string? userid = getMyUserId(User);
             var q = from i in context.Invoices.Where(i => i.UserId == userid).Include(i => i.InvoiceLineItems).Include(i => i.InvoiceTerms).Include(i => i.Customer)

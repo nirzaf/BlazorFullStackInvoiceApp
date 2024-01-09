@@ -11,7 +11,7 @@ public class CustomerRepository : GenericOwnedRepository<Customer, CustomerDTO>,
     public CustomerRepository(ApplicationDbContext context, IMapper mapper) 
         : base(context, mapper) { }
 
-    public async Task Seed(ClaimsPrincipal User)
+    public async Task Seed(ClaimsPrincipal? User)
     {
             string? userid = getMyUserId(User);
             if (userid is not null)
