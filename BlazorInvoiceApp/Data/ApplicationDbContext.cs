@@ -4,22 +4,21 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BlazorInvoiceApp.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext(
+        DbContextOptions<ApplicationDbContext> options,
+        DbSet<Invoice> invoices,
+        DbSet<Customer> customers,
+        DbSet<InvoiceTerms> invoiceTerms,
+        DbSet<InvoiceLineItem> invoicesLineItems)
+        : IdentityDbContext(options)
     {
-        public DbSet<Invoice> Invoices { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<InvoiceTerms> InvoiceTerms { get; set; }
-        public DbSet<InvoiceLineItem> InvoicesLineItems { get; set; }
+        public DbSet<Invoice> Invoices { get; set; } = invoices;
+        public DbSet<Customer> Customers { get; set; } = customers;
+        public DbSet<InvoiceTerms> InvoiceTerms { get; set; } = invoiceTerms;
+        public DbSet<InvoiceLineItem> InvoicesLineItems { get; set; } = invoicesLineItems;
 
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-
-
-        }
-
-        protected void RemoveFixups(ModelBuilder modelBuilder, Type type)
+        private void RemoveFixUps(ModelBuilder modelBuilder, Type type)
         {
             foreach (var relationship in modelBuilder.Model.FindEntityType(type)!.GetForeignKeys())
             {
@@ -30,10 +29,10 @@ namespace BlazorInvoiceApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // customizations
-            RemoveFixups(modelBuilder, typeof(Invoice));
-            RemoveFixups(modelBuilder, typeof(InvoiceTerms));
-            RemoveFixups(modelBuilder, typeof(Customer));
-            RemoveFixups(modelBuilder, typeof(InvoiceLineItem));
+            RemoveFixUps(modelBuilder, typeof(Invoice));
+            RemoveFixUps(modelBuilder, typeof(InvoiceTerms));
+            RemoveFixUps(modelBuilder, typeof(Customer));
+            RemoveFixUps(modelBuilder, typeof(InvoiceLineItem));
 
             modelBuilder.Entity<Invoice>().Property(u => u.InvoiceNumber).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
