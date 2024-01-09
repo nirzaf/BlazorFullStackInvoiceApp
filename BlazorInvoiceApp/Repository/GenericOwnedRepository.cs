@@ -23,24 +23,22 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
     public virtual async Task<List<TDTO>> GetAllMine(ClaimsPrincipal? User)
     {
         string? userid = getMyUserId(User);
-        if (userid is null) return new List<TDTO>();
-        List<TEntity> entities =
-            await context.Set<TEntity>().Where(e => e.UserId == userid).ToListAsync();
+        if (userid is null) return [];
+        List<TEntity> entities = await context.Set<TEntity>()
+            .Where(e => e.UserId == userid).ToListAsync();
         List<TDTO> result = mapper.Map<List<TDTO>>(entities);
         return result;
-
     }
 
     public virtual async Task<TDTO> GetMineById(ClaimsPrincipal? User, string id)
     {
         string? userid = getMyUserId(User);
         if (userid is null) return null!;
-        TEntity? entity = await
-            context.Set<TEntity>().Where(entity => entity.Id == id && entity.UserId == userid)
-                .FirstOrDefaultAsync();
+        TEntity? entity = await context.Set<TEntity>()
+            .Where(entity => entity.Id == id && entity.UserId == userid)
+            .FirstOrDefaultAsync();
         TDTO result = mapper.Map<TDTO>(entity);
         return result;
-
     }
 
     public virtual async Task<TDTO> UpdateMine(ClaimsPrincipal? User, TDTO dto)

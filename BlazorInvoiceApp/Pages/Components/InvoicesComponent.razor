@@ -64,7 +64,7 @@
     string dropdownvalue = string.Empty;
 
     IEnumerable<string>? selectedCustomerNames;
-    List<string> customernames = new List<string>();
+    List<string> customernames = new();
     void OnSelectedCustomerNameChange(object value)
     {
         if (selectedCustomerNames != null && !selectedCustomerNames.Any())
@@ -74,7 +74,7 @@
     }
 
     IEnumerable<string>? selectedInvoiceTerms;
-    List<string> invoicetermsvalues = new List<string>();
+    List<string> invoicetermsvalues = new();
     void OnSelectedInvoiceTermsChange(object value)
     {
         if (selectedInvoiceTerms != null && !selectedInvoiceTerms.Any())

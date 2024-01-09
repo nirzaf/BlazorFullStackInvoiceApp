@@ -20,7 +20,7 @@ public class CustomerRepository : GenericOwnedRepository<Customer, CustomerDTO>,
                 if (count == 0)
                 {
                     // seed some data.
-                    CustomerDTO defaultCustomer = new CustomerDTO
+                    CustomerDTO defaultCustomer = new()
                     {
                         Name = "My First Customer"
                     };

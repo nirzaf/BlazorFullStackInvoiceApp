@@ -19,15 +19,15 @@ public class InvoiceTermsRepository : GenericOwnedRepository<InvoiceTerms, Invoi
                 if (count == 0)
                 {
                     // seed some data.
-                    InvoiceTermsDTO terms1 = new InvoiceTermsDTO
+                    InvoiceTermsDTO terms1 = new()
                     {
                         Name = "Net 30"
                     };
-                    InvoiceTermsDTO terms2 = new InvoiceTermsDTO
+                    InvoiceTermsDTO terms2 = new()
                     {
                         Name = "Net 60"
                     };
-                    InvoiceTermsDTO terms3 = new InvoiceTermsDTO
+                    InvoiceTermsDTO terms3 = new()
                     {
                         Name = "Net 90"
                     };

@@ -61,14 +61,14 @@
             foreach (Customer c in customers_to_delete)
                 context.Customers.Remove(c);
 
-            var invoiceterms_to_delete
+            var invoiceTermsToDelete
                 = await context.InvoiceTerms.Where(it => it.UserId == userid).ToListAsync();
-            foreach (InvoiceTerms it in invoiceterms_to_delete)
+            foreach (InvoiceTerms it in invoiceTermsToDelete)
                 context.InvoiceTerms.Remove(it);
 
-            var invoicelineitems_to_delete
+            var invoiceLineItemsToDelete
                 = await context.InvoicesLineItems.Where(ili => ili.UserId == userid).ToListAsync();
-            foreach (InvoiceLineItem ili in invoicelineitems_to_delete)
+            foreach (InvoiceLineItem ili in invoiceLineItemsToDelete)
                 context.InvoicesLineItems.Remove(ili);
 
             var invoices_to_delete
@@ -78,17 +78,17 @@
             await context.SaveChangesAsync();
 
 
-            Customer c1 = new Customer()
+            Customer c1 = new()
                 {
                     UserId = userid,
                     Name = "Customer 1"
                 };
-            Customer c2 = new Customer()
+            Customer c2 = new()
                 {
                     UserId = userid,
                     Name = "Customer 2"
                 };
-            Customer c3 = new Customer()
+            Customer c3 = new()
                 {
                     UserId = userid,
                     Name = "Customer 3"
@@ -96,9 +96,8 @@
             context.Customers.Add(c1);
             context.Customers.Add(c2);
             context.Customers.Add(c3);
-
-
-            InvoiceTerms terms1 = new InvoiceTerms()
+            
+            InvoiceTerms terms1 = new()
                 {
                     UserId = userid,
                     Name = "Net 45"
@@ -106,7 +105,7 @@
             context.InvoiceTerms.Add(terms1);
 
 
-            Invoice i1 = new Invoice()
+            Invoice i1 = new()
                 {
                     InvoiceTermsId = terms1.Id,
                     UserId = userid,
@@ -116,7 +115,7 @@
                     Description = "First Invoice",
                     TaxRate = 5.0,
                 };
-            Invoice i2 = new Invoice()
+            Invoice i2 = new()
                 {
                     InvoiceTermsId = terms1.Id,
                     UserId = userid,
@@ -127,7 +126,7 @@
                     TaxRate = 5.0
                 };
 
-            Invoice i3 = new Invoice()
+            Invoice i3 = new()
                 {
                     InvoiceTermsId = terms1.Id,
                     UserId = userid,
@@ -140,9 +139,8 @@
             context.Invoices.Add(i1);
             context.Invoices.Add(i2);
             context.Invoices.Add(i3);
-            
 
-            InvoiceLineItem ili1 = new InvoiceLineItem()
+            InvoiceLineItem ili1 = new()
                 {
                     InvoiceId = i1.Id,
                     UserId = userid,
@@ -150,7 +148,7 @@
                     Description = "Computers",
                     UnitPrice = 555
                 };
-            InvoiceLineItem ili2 = new InvoiceLineItem()
+            InvoiceLineItem ili2 = new()
                 {
                     InvoiceId = i1.Id,
                     UserId = userid,
@@ -158,7 +156,7 @@
                     Description = "Printers",
                     UnitPrice = 250,
                 };
-            InvoiceLineItem ili3 = new InvoiceLineItem()
+            InvoiceLineItem ili3 = new()
                 {
                     InvoiceId = i2.Id,
                     UserId = userid,
@@ -166,7 +164,7 @@
                     Description = "Apples",
                     UnitPrice = 0.79
                 };
-            InvoiceLineItem ili4 = new InvoiceLineItem()
+            InvoiceLineItem ili4 = new()
                 {
                     InvoiceId = i2.Id,
                     UserId = userid,
@@ -175,7 +173,7 @@
                     UnitPrice = 1.25
                 };
 
-            InvoiceLineItem ili5 = new InvoiceLineItem()
+            InvoiceLineItem ili5 = new()
                 {
                     InvoiceId = i3.Id,
                     UserId = userid,
@@ -213,9 +211,6 @@
             await context.Invoices.Where(i => i.CustomerId == c2.Id)
             .Include("Customer").Include("InvoiceTerms").Include("InvoiceLineItems")
             .ToListAsync();
-
-
-
         }
     }
 }
