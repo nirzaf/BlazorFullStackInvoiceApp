@@ -44,14 +44,9 @@ public class RevalidatingIdentityAuthenticationStateProvider<TUser>(
     {
         var user = await userManager.GetUserAsync(principal);
         if (user == null) return false;
-        if (userManager.SupportsUserSecurityStamp)
-        {
-            var principalStamp = principal.FindFirstValue(_options.ClaimsIdentity.SecurityStampClaimType);
-            var userStamp = await userManager.GetSecurityStampAsync(user);
-            return principalStamp == userStamp;
-        }
-
-        return true;
-
+        if (!userManager.SupportsUserSecurityStamp) return true;
+        var principalStamp = principal.FindFirstValue(_options.ClaimsIdentity.SecurityStampClaimType);
+        var userStamp = await userManager.GetSecurityStampAsync(user);
+        return principalStamp == userStamp;
     }
 }
