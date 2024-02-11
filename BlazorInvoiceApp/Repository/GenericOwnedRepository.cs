@@ -24,9 +24,9 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
     {
         string? userid = getMyUserId(User);
         if (userid is null) return [];
-        List<TEntity> entities = await context.Set<TEntity>()
+        var entities = await context.Set<TEntity>()
             .Where(e => e.UserId == userid).ToListAsync();
-        List<TDTO>? result = mapper.Map<List<TDTO>>(entities);
+        var result = mapper.Map<List<TDTO>>(entities);
         return result;
     }
 
@@ -60,7 +60,8 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
     {
         string? userid = getMyUserId(User);
         if (userid is null) return false;
-        TEntity? entity = await context.Set<TEntity>().Where(entity => entity.Id == id && entity.UserId == userid)
+        TEntity? entity = await context.Set<TEntity>()
+            .Where(entity => entity.Id == id && entity.UserId == userid)
             .FirstOrDefaultAsync();
         if (entity is null) return false;
         context.Remove(entity);
@@ -83,7 +84,7 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
     {
         string? userid = getMyUserId(User);
         if (userid is null) return [];
-        IQueryable<TEntity> query = context.Set<TEntity>().Where(e => e.UserId == userid);
+        var query = context.Set<TEntity>().Where(e => e.UserId == userid);
         if (expression is not null)
             query = query.Where(expression);
 
