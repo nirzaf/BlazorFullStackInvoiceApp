@@ -1,4 +1,5 @@
-﻿@inject IRepositoryCollection repo
+﻿@using System.Collections
+@inject IRepositoryCollection repo
 @inject NavigationManager nav
 @inject AuthenticationStateProvider authstate
 <div class="text-danger">@Message</div>
@@ -56,15 +57,15 @@
 @code {
 
     List<InvoiceDTO> invoices = new();
-    List<CustomerDTO> customers = new();
-    List<InvoiceTermsDTO> invoiceterms = new();
+    List<CustomerDTO>? customers = new();
+    List<InvoiceTermsDTO>? invoiceterms = new();
     RadzenDataGrid<InvoiceDTO>? invoicesGrid;
 
     string Message = string.Empty;
     string dropdownvalue = string.Empty;
 
     IEnumerable<string>? selectedCustomerNames;
-    List<string> customernames = new();
+    List<string>? customernames = new();
     void OnSelectedCustomerNameChange(object value)
     {
         if (selectedCustomerNames != null && !selectedCustomerNames.Any())
@@ -74,7 +75,7 @@
     }
 
     IEnumerable<string>? selectedInvoiceTerms;
-    List<string> invoicetermsvalues = new();
+    List<string>? invoicetermsvalues = new();
     void OnSelectedInvoiceTermsChange(object value)
     {
         if (selectedInvoiceTerms != null && !selectedInvoiceTerms.Any())
@@ -115,7 +116,7 @@
     {
         AuthenticationState auth = await authstate.GetAuthenticationStateAsync();
         // create an invoice and redirect to it
-        List<InvoiceTermsDTO> terms = await repo.InvoiceTerms.GetAllMine(auth.User);
+        List<InvoiceTermsDTO>? terms = await repo.InvoiceTerms.GetAllMine(auth.User);
         string id = await repo.Invoice.AddMine(auth.User, new InvoiceDTO
             {
                 Description = "New Invoice",

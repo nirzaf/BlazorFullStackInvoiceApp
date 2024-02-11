@@ -20,28 +20,28 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
         return uid?.Value;
     }
 
-    public virtual async Task<List<TDTO>> GetAllMine(ClaimsPrincipal? User)
+    public virtual async Task<List<TDTO>?> GetAllMine(ClaimsPrincipal? User)
     {
         string? userid = getMyUserId(User);
         if (userid is null) return [];
         List<TEntity> entities = await context.Set<TEntity>()
             .Where(e => e.UserId == userid).ToListAsync();
-        List<TDTO> result = mapper.Map<List<TDTO>>(entities);
+        List<TDTO>? result = mapper.Map<List<TDTO>>(entities);
         return result;
     }
 
-    public virtual async Task<TDTO> GetMineById(ClaimsPrincipal? User, string id)
+    public virtual async Task<TDTO?> GetMineById(ClaimsPrincipal? User, string id)
     {
         string? userid = getMyUserId(User);
         if (userid is null) return null!;
         TEntity? entity = await context.Set<TEntity>()
             .Where(entity => entity.Id == id && entity.UserId == userid)
             .FirstOrDefaultAsync();
-        TDTO result = mapper.Map<TDTO>(entity);
+        TDTO? result = mapper.Map<TDTO>(entity);
         return result;
     }
 
-    public virtual async Task<TDTO> UpdateMine(ClaimsPrincipal? User, TDTO dto)
+    public virtual async Task<TDTO?> UpdateMine(ClaimsPrincipal? User, TDTO dto)
     {
         string? userid = getMyUserId(User);
         if (userid is null) return null!;
@@ -52,7 +52,7 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
         if (toUpdate is null) return null!;
         mapper.Map(dto, toUpdate);
         context.Entry(toUpdate).State = EntityState.Modified;
-        TDTO result = mapper.Map<TDTO>(toUpdate);
+        TDTO? result = mapper.Map<TDTO>(toUpdate);
         return result;
     }
 
@@ -73,16 +73,16 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
         if (userid is null) return null!;
         dto.UserId = userid;
         dto.Id = Guid.NewGuid().ToString();
-        TEntity toAdd = mapper.Map<TEntity>(dto);
+        TEntity? toAdd = mapper.Map<TEntity>(dto);
         await context.Set<TEntity>().AddAsync(toAdd);
         return toAdd.Id;
     }
 
-    protected async Task<List<TDTO>> GenericQuery(ClaimsPrincipal? User, Expression<Func<TEntity, bool>>? expression,
+    protected async Task<List<TDTO>?> GenericQuery(ClaimsPrincipal? User, Expression<Func<TEntity, bool>>? expression,
         List<Expression<Func<TEntity, object>>>? includes)
     {
         string? userid = getMyUserId(User);
-        if (userid is null) return new List<TDTO>();
+        if (userid is null) return [];
         IQueryable<TEntity> query = context.Set<TEntity>().Where(e => e.UserId == userid);
         if (expression is not null)
             query = query.Where(expression);
@@ -93,7 +93,7 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
         }
 
         List<TEntity> entities = await query.ToListAsync();
-        List<TDTO> result = mapper.Map<List<TDTO>>(entities);
+        List<TDTO>? result = mapper.Map<List<TDTO>>(entities);
         return result;
     }
 }

@@ -1,4 +1,5 @@
-﻿@inject IRepositoryCollection repo
+﻿@using System.Collections
+@inject IRepositoryCollection repo
 @inject NavigationManager navManager
 @inject DialogService DialogService
 @inject AuthenticationStateProvider authstate
@@ -119,10 +120,10 @@
     [Parameter]
     public string Id { get; set; } = String.Empty;
 
-    List<CustomerDTO> customers = new();
-    List<InvoiceTermsDTO> terms = new();
-    InvoiceDTO invoice = new();
-    List<InvoiceLineItemDTO> lineitems = new();
+    List<CustomerDTO>? customers = new();
+    List<InvoiceTermsDTO>? terms = new();
+    InvoiceDTO? invoice = new();
+    List<InvoiceLineItemDTO>? lineitems = new();
     RadzenDataGrid<InvoiceLineItemDTO>? lineitemsGrid;
     InvoiceLineItemDTO? lineitemToInsert;
     InvoiceLineItemDTO? lineitemToUpdate;

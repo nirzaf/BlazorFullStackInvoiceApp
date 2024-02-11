@@ -6,5 +6,5 @@ namespace BlazorInvoiceApp.Repository;
 
 public interface IInvoiceLineItemRepository : IGenericOwnedRepository<InvoiceLineItem, InvoiceLineItemDTO>
 {
-    public Task<List<InvoiceLineItemDTO>> GetAllByInvoiceId(ClaimsPrincipal? User, string invoiceid);
+    public Task<List<InvoiceLineItemDTO>?> GetAllByInvoiceId(ClaimsPrincipal? User, string invoiceid);
 }
