@@ -17,7 +17,6 @@ public class ApplicationDbContext(
     public DbSet<InvoiceTerms> InvoiceTerms { get; set; } = invoiceTerms;
     public DbSet<InvoiceLineItem> InvoicesLineItems { get; set; } = invoicesLineItems;
 
-
     private void RemoveFixUps(ModelBuilder modelBuilder, Type type)
     {
         foreach (var relationship in modelBuilder.Model.FindEntityType(type)!.GetForeignKeys())
