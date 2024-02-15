@@ -10,11 +10,6 @@ public class RepositoryCollection : IRepositoryCollection
     private readonly ApplicationDbContext context;
     private readonly IMapper mapper;
 
-    public IInvoiceRepository Invoice { get; private set; }
-    public ICustomerRepository Customer { get; private set; }
-    public IInvoiceTermsRepository InvoiceTerms { get; private set; }
-    public IInvoiceLineItemRepository InvoiceLineItem { get; private set; }
-
 
     public RepositoryCollection(IDbContextFactory<ApplicationDbContext> dbFactory, IMapper mapper)
     {
@@ -25,6 +20,11 @@ public class RepositoryCollection : IRepositoryCollection
         InvoiceTerms = new InvoiceTermsRepository(context, mapper);
         InvoiceLineItem = new InvoiceLineItemRepository(context, mapper);
     }
+
+    public IInvoiceRepository Invoice { get; }
+    public ICustomerRepository Customer { get; }
+    public IInvoiceTermsRepository InvoiceTerms { get; }
+    public IInvoiceLineItemRepository InvoiceLineItem { get; }
 
     public void Dispose()
     {
@@ -40,7 +40,6 @@ public class RepositoryCollection : IRepositoryCollection
         catch (DbUpdateException ex)
         {
             foreach (EntityEntry item in ex.Entries)
-            {
                 switch (item.State)
                 {
                     case EntityState.Modified:
@@ -59,7 +58,6 @@ public class RepositoryCollection : IRepositoryCollection
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-            }
         }
 
         return 0;
