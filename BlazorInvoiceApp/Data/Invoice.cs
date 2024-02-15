@@ -9,7 +9,7 @@ public class Invoice : IEntity, IOwnedEntity
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
     public string UserId { get; set; } = null!;
-    public IdentityUser? User { get; set; } = null!;
+    public IdentityUser? User { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int InvoiceNumber { get; set; }

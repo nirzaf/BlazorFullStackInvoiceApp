@@ -41,21 +41,23 @@ public class RepositoryCollection : IRepositoryCollection
             {
                 foreach (EntityEntry item in ex.Entries)
                 {
-                    if (item.State == EntityState.Modified)
+                    switch (item.State)
                     {
-                        item.CurrentValues.SetValues(item.OriginalValues);
-                        item.State = EntityState.Unchanged;
-                        throw new RepositoryUpdateException();
-                    }
-
-                    if (item.State == EntityState.Deleted)
-                    {
-                        item.State = EntityState.Unchanged;
-                        throw new RepositoryDeleteException();
-                    }
-                    if (item.State == EntityState.Added)
-                    {
-                        throw new RepositoryAddException();
+                        case EntityState.Modified:
+                            item.CurrentValues.SetValues(item.OriginalValues);
+                            item.State = EntityState.Unchanged;
+                            throw new RepositoryUpdateException();
+                        case EntityState.Deleted:
+                            item.State = EntityState.Unchanged;
+                            throw new RepositoryDeleteException();
+                        case EntityState.Added:
+                            throw new RepositoryAddException();
+                        case EntityState.Detached:
+                            break;
+                        case EntityState.Unchanged:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                 }
             }
