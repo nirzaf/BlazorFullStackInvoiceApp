@@ -18,50 +18,50 @@ public class RepositoryCollection : IRepositoryCollection
 
     public RepositoryCollection(IDbContextFactory<ApplicationDbContext> dbFactory, IMapper mapper)
     {
-            context = dbFactory.CreateDbContext();
-            this.mapper = mapper;
-            Invoice = new InvoiceRepository(context, mapper);
-            Customer = new CustomerRepository(context, mapper);
-            InvoiceTerms = new InvoiceTermsRepository(context, mapper);
-            InvoiceLineItem = new InvoiceLineItemRepository(context, mapper);
-        }
+        context = dbFactory.CreateDbContext();
+        this.mapper = mapper;
+        Invoice = new InvoiceRepository(context, mapper);
+        Customer = new CustomerRepository(context, mapper);
+        InvoiceTerms = new InvoiceTermsRepository(context, mapper);
+        InvoiceLineItem = new InvoiceLineItemRepository(context, mapper);
+    }
 
     public void Dispose()
     {
-            context.Dispose();
-        }
+        context.Dispose();
+    }
 
     public async Task<int> Save()
     {
-            try
+        try
+        {
+            return await context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            foreach (EntityEntry item in ex.Entries)
             {
-                return await context.SaveChangesAsync();
-            }
-            catch (DbUpdateException ex)
-            {
-                foreach (EntityEntry item in ex.Entries)
+                switch (item.State)
                 {
-                    switch (item.State)
-                    {
-                        case EntityState.Modified:
-                            item.CurrentValues.SetValues(item.OriginalValues);
-                            item.State = EntityState.Unchanged;
-                            throw new RepositoryUpdateException();
-                        case EntityState.Deleted:
-                            item.State = EntityState.Unchanged;
-                            throw new RepositoryDeleteException();
-                        case EntityState.Added:
-                            throw new RepositoryAddException();
-                        case EntityState.Detached:
-                            break;
-                        case EntityState.Unchanged:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
+                    case EntityState.Modified:
+                        item.CurrentValues.SetValues(item.OriginalValues);
+                        item.State = EntityState.Unchanged;
+                        throw new RepositoryUpdateException();
+                    case EntityState.Deleted:
+                        item.State = EntityState.Unchanged;
+                        throw new RepositoryDeleteException();
+                    case EntityState.Added:
+                        throw new RepositoryAddException();
+                    case EntityState.Detached:
+                        break;
+                    case EntityState.Unchanged:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
-            return 0;
         }
 
+        return 0;
+    }
 }
