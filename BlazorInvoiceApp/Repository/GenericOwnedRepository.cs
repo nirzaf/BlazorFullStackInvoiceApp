@@ -13,12 +13,6 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
     where TDTO : class, IDTO, IOwnedDTO
 {
     protected readonly ApplicationDbContext context = context;
-    
-    protected string? getMyUserId(ClaimsPrincipal? User)
-    {
-        Claim? uid = User?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
-        return uid?.Value;
-    }
 
     public virtual async Task<List<TDTO>?> GetAllMine(ClaimsPrincipal? User)
     {
@@ -79,6 +73,12 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
         return toAdd.Id;
     }
 
+    protected string? getMyUserId(ClaimsPrincipal? User)
+    {
+        Claim? uid = User?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+        return uid?.Value;
+    }
+
     protected async Task<List<TDTO>?> GenericQuery(ClaimsPrincipal? User, Expression<Func<TEntity, bool>>? expression,
         List<Expression<Func<TEntity, object>>>? includes)
     {
@@ -88,13 +88,10 @@ public class GenericOwnedRepository<TEntity, TDTO>(ApplicationDbContext context,
         if (expression is not null)
             query = query.Where(expression);
 
-        if (includes is not null)
-        {
-            query = includes.Aggregate(query, (current, include) => current.Include(include));
-        }
+        if (includes is not null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 
-        List<TEntity> entities = await query.ToListAsync();
-        List<TDTO>? result = mapper.Map<List<TDTO>>(entities);
+        var entities = await query.ToListAsync();
+        var result = mapper.Map<List<TDTO>>(entities);
         return result;
     }
 }

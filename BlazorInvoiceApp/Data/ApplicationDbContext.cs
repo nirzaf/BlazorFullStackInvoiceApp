@@ -19,10 +19,8 @@ public class ApplicationDbContext(
 
     private void RemoveFixUps(ModelBuilder modelBuilder, Type type)
     {
-        foreach (var relationship in modelBuilder.Model.FindEntityType(type)!.GetForeignKeys())
-        {
+        foreach (IMutableForeignKey relationship in modelBuilder.Model.FindEntityType(type)!.GetForeignKeys())
             relationship.DeleteBehavior = DeleteBehavior.ClientNoAction;
-        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,7 +31,8 @@ public class ApplicationDbContext(
         RemoveFixUps(modelBuilder, typeof(Customer));
         RemoveFixUps(modelBuilder, typeof(InvoiceLineItem));
 
-        modelBuilder.Entity<Invoice>().Property(u => u.InvoiceNumber).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+        modelBuilder.Entity<Invoice>().Property(u => u.InvoiceNumber).Metadata
+            .SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
         modelBuilder.Entity<InvoiceLineItem>()
             .Property(u => u.TotalPrice)

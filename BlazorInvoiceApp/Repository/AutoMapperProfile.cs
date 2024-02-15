@@ -2,12 +2,12 @@
 using BlazorInvoiceApp.Data;
 using BlazorInvoiceApp.DTOS;
 
-
 namespace BlazorInvoiceApp.Repository;
 
 public class AutoMapperProfile : Profile
 {
-    public AutoMapperProfile() {
+    public AutoMapperProfile()
+    {
         CreateMap<Customer, CustomerDTO>();
         CreateMap<CustomerDTO, Customer>()
             .ForMember(dest => dest.Id, opt => opt.Ignore());

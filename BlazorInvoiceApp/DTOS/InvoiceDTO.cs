@@ -2,7 +2,6 @@
 
 public class InvoiceDTO : IDTO, IOwnedDTO
 {
-    public string Id { get; set; } = string.Empty;
     public DateTime CreateDate { get; set; } = DateTime.Now;
     public int InvoiceNumber { get; set; }
     public string Description { get; set; } = string.Empty;
@@ -14,5 +13,6 @@ public class InvoiceDTO : IDTO, IOwnedDTO
     public double Credit { get; set; } = 0;
     public double TaxRate { get; set; } = 0;
     public double InvoiceTotal { get; set; } = 0;
+    public string Id { get; set; } = string.Empty;
     public string UserId { get; set; } = null!;
 }

@@ -13,10 +13,11 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
-        
-        var connectionString 
-            = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+        string connectionString
+            = builder.Configuration.GetConnectionString("DefaultConnection") ??
+              throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString), ServiceLifetime.Transient);
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -24,19 +25,17 @@ public class Program
             .AddEntityFrameworkStores<ApplicationDbContext>();
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
-        builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+        builder.Services
+            .AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
         builder.Services.AddScoped<DialogService>();
         builder.Services.AddTransient<IRepositoryCollection, RepositoryCollection>();
 
-        var mapperConfig = new MapperConfiguration(mc =>
-        {
-            mc.AddProfile(new AutoMapperProfile());
-        });
+        MapperConfiguration mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new AutoMapperProfile()); });
 
         IMapper mapper = mapperConfig.CreateMapper();
         builder.Services.AddSingleton(mapper);
 
-        var app = builder.Build();
+        WebApplication app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

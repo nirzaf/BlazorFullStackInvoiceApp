@@ -1,5 +1,5 @@
 ﻿@page "/entitytest"
-@using System.Security.Claims;
+@using System.Security.Claims
 @inject AuthenticationStateProvider authstate
 @inject IDbContextFactory<ApplicationDbContext> dbFactory
 <h3>EntityTest</h3>
@@ -40,19 +40,18 @@
 }
 
 
-
 @code {
 
-    private List<Invoice>? invoices = null;
+    private List<Invoice>? invoices;
 
     protected override async Task OnInitializedAsync()
     {
         AuthenticationState auth = await authstate.GetAuthenticationStateAsync();
-        Claim? uid = 
-        auth.User?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+        Claim? uid =
+            auth.User?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
         if (uid is not null)
         {
-            var context = await dbFactory.CreateDbContextAsync();
+            ApplicationDbContext context = await dbFactory.CreateDbContextAsync();
             string userid = uid.Value;
 
             // DELETE (clear out the tables)
@@ -79,108 +78,108 @@
 
 
             Customer c1 = new()
-                {
-                    UserId = userid,
-                    Name = "Customer 1"
-                };
+            {
+                UserId = userid,
+                Name = "Customer 1"
+            };
             Customer c2 = new()
-                {
-                    UserId = userid,
-                    Name = "Customer 2"
-                };
+            {
+                UserId = userid,
+                Name = "Customer 2"
+            };
             Customer c3 = new()
-                {
-                    UserId = userid,
-                    Name = "Customer 3"
-                };
+            {
+                UserId = userid,
+                Name = "Customer 3"
+            };
             context.Customers.Add(c1);
             context.Customers.Add(c2);
             context.Customers.Add(c3);
-            
+
             InvoiceTerms terms1 = new()
-                {
-                    UserId = userid,
-                    Name = "Net 45"
-                };
+            {
+                UserId = userid,
+                Name = "Net 45"
+            };
             context.InvoiceTerms.Add(terms1);
 
 
             Invoice i1 = new()
-                {
-                    InvoiceTermsId = terms1.Id,
-                    UserId = userid,
-                    Credit = 0.0,
-                    CustomerId = c1.Id,
-                    Paid = 0.0,
-                    Description = "First Invoice",
-                    TaxRate = 5.0,
-                };
+            {
+                InvoiceTermsId = terms1.Id,
+                UserId = userid,
+                Credit = 0.0,
+                CustomerId = c1.Id,
+                Paid = 0.0,
+                Description = "First Invoice",
+                TaxRate = 5.0
+            };
             Invoice i2 = new()
-                {
-                    InvoiceTermsId = terms1.Id,
-                    UserId = userid,
-                    Credit = 0.0,
-                    CustomerId = c2.Id,
-                    Paid = 0.0,
-                    Description = "Second Invoice",
-                    TaxRate = 5.0
-                };
+            {
+                InvoiceTermsId = terms1.Id,
+                UserId = userid,
+                Credit = 0.0,
+                CustomerId = c2.Id,
+                Paid = 0.0,
+                Description = "Second Invoice",
+                TaxRate = 5.0
+            };
 
             Invoice i3 = new()
-                {
-                    InvoiceTermsId = terms1.Id,
-                    UserId = userid,
-                    Credit = 0.0,
-                    CustomerId = c2.Id,
-                    Paid = 0.0,
-                    Description = "Third Invoice",
-                    TaxRate = 5.0
-                };
+            {
+                InvoiceTermsId = terms1.Id,
+                UserId = userid,
+                Credit = 0.0,
+                CustomerId = c2.Id,
+                Paid = 0.0,
+                Description = "Third Invoice",
+                TaxRate = 5.0
+            };
             context.Invoices.Add(i1);
             context.Invoices.Add(i2);
             context.Invoices.Add(i3);
 
             InvoiceLineItem ili1 = new()
-                {
-                    InvoiceId = i1.Id,
-                    UserId = userid,
-                    Quantity = 4,
-                    Description = "Computers",
-                    UnitPrice = 555
-                };
+            {
+                InvoiceId = i1.Id,
+                UserId = userid,
+                Quantity = 4,
+                Description = "Computers",
+                UnitPrice = 555
+            };
             InvoiceLineItem ili2 = new()
-                {
-                    InvoiceId = i1.Id,
-                    UserId = userid,
-                    Quantity = 2,
-                    Description = "Printers",
-                    UnitPrice = 250,
-                };
+            {
+                InvoiceId = i1.Id,
+                UserId = userid,
+                Quantity = 2,
+                Description = "Printers",
+                UnitPrice = 250
+            };
             InvoiceLineItem ili3 = new()
-                {
-                    InvoiceId = i2.Id,
-                    UserId = userid,
-                    Quantity = 12,
-                    Description = "Apples",
-                    UnitPrice = 0.79
-                };
+            {
+                InvoiceId = i2.Id,
+                UserId = userid,
+                Quantity = 12,
+                Description = "Apples",
+                UnitPrice = 0.79
+            };
             InvoiceLineItem ili4 = new()
-                {
-                    InvoiceId = i2.Id,
-                    UserId = userid,
-                    Quantity = 5,
-                    Description = "Oranges",
-                    UnitPrice = 1.25
-                };
+            {
+                InvoiceId = i2.Id,
+                UserId = userid,
+                Quantity = 5,
+                Description = "Oranges",
+                UnitPrice = 1.25
+            };
 
             InvoiceLineItem ili5 = new()
-                {
-                    InvoiceId = i3.Id,
-                    UserId = userid,
-                    Quantity = 20,
-                    Description = "Stapler",
-                    UnitPrice = 12.95
-                };
+            {
+                InvoiceId = i3.Id,
+                UserId = userid,
+                Quantity = 20,
+                Description = "Stapler",
+                UnitPrice = 12.95
+            };
 
             context.InvoicesLineItems.Add(ili1);
             context.InvoicesLineItems.Add(ili2);
@@ -190,17 +189,18 @@
             await context.SaveChangesAsync();
 
             // change all of invoices for customer 2, adjust the tax rate
-            List<Invoice> customer2invoices =
-            await context.Invoices.Where(i => i.CustomerId == c2.Id).ToListAsync();
+            var customer2invoices =
+                await context.Invoices.Where(i => i.CustomerId == c2.Id).ToListAsync();
 
             foreach (Invoice i in customer2invoices)
             {
                 i.TaxRate = 10;
             }
+
             await context.SaveChangesAsync();
 
             Customer? customer_to_change =
-            await context.Customers.Where(c => c.Name == "Customer 2").FirstOrDefaultAsync();
+                await context.Customers.Where(c => c.Name == "Customer 2").FirstOrDefaultAsync();
             if (customer_to_change is not null)
             {
                 customer_to_change.Name = "Test Customer 2";
@@ -208,9 +208,10 @@
             }
 
             invoices =
-            await context.Invoices.Where(i => i.CustomerId == c2.Id)
-            .Include("Customer").Include("InvoiceTerms").Include("InvoiceLineItems")
-            .ToListAsync();
+                await context.Invoices.Where(i => i.CustomerId == c2.Id)
+                    .Include("Customer").Include("InvoiceTerms").Include("InvoiceLineItems")
+                    .ToListAsync();
         }
     }
+
 }

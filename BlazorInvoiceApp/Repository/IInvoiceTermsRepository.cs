@@ -1,6 +1,6 @@
-﻿using BlazorInvoiceApp.Data;
+﻿using System.Security.Claims;
+using BlazorInvoiceApp.Data;
 using BlazorInvoiceApp.DTOS;
-using System.Security.Claims;
 
 namespace BlazorInvoiceApp.Repository;
 

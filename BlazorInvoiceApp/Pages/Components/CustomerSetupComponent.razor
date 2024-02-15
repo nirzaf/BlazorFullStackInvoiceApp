@@ -4,37 +4,37 @@
 <h3>Customers</h3>
 <AuthorizeView>
     <Authorized>
-<div class="text-danger">@Message</div>
-<RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" class="mt-2 mb-4" Text="Add New Customer" Click="@InsertRow" Disabled=@(customerToInsert != null || customerToUpdate != null) />
-<RadzenDataGrid @ref="customersGrid" AllowAlternatingRows="false" AllowSorting="true" EditMode="DataGridEditMode.Single"
-                Data="@customers" TItem="CustomerDTO" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" Sort="@Reset">
-<Columns>
-    <RadzenDataGridColumn TItem="CustomerDTO" Property="Name" Title="Name" Width="200px">
-    <EditTemplate Context="customer">
-        <RadzenTextBox @bind-Value="customer.Name" Style="width:100%; display: block" Name="Name" />
-        <RadzenRequiredValidator Text="Name is Required" Component="Name" Popup="true" />
-    </EditTemplate>
-    
-    </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="CustomerDTO" Context="customer" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="150px">
-            <Template Context="customer">
-                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(customer))" @onclick:stopPropagation="true">
-                </RadzenButton>
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(customer))" @onclick:stopPropagation="true">
-                </RadzenButton>
-            </Template>
-            <EditTemplate Context="customer">
-                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(customer))">
-                </RadzenButton>
-                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(customer))">
-                </RadzenButton>
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(customer))">
-                </RadzenButton>
-            </EditTemplate>
-        </RadzenDataGridColumn>
+        <div class="text-danger">@Message</div>
+        <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" class="mt-2 mb-4" Text="Add New Customer" Click="@InsertRow" Disabled="@(customerToInsert != null || customerToUpdate != null)"/>
+        <RadzenDataGrid @ref="customersGrid" AllowAlternatingRows="false" AllowSorting="true" EditMode="DataGridEditMode.Single"
+                        Data="@customers" TItem="CustomerDTO" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" Sort="@Reset">
+            <Columns>
+                <RadzenDataGridColumn TItem="CustomerDTO" Property="Name" Title="Name" Width="200px">
+                    <EditTemplate Context="customer">
+                        <RadzenTextBox @bind-Value="customer.Name" Style="width:100%; display: block" Name="Name"/>
+                        <RadzenRequiredValidator Text="Name is Required" Component="Name" Popup="true"/>
+                    </EditTemplate>
 
-</Columns>
-</RadzenDataGrid>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="CustomerDTO" Context="customer" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="150px">
+                    <Template Context="customer">
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(customer))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(customer))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="customer">
+                        <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => SaveRow(customer))">
+                        </RadzenButton>
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => CancelEdit(customer))">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(customer))">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+            </Columns>
+        </RadzenDataGrid>
     </Authorized>
 </AuthorizeView>
 
@@ -133,4 +133,5 @@
         customerToInsert = null;
         customerToUpdate = null;
     }
+
 }

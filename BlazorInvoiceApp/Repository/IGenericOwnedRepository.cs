@@ -1,6 +1,6 @@
-﻿using BlazorInvoiceApp.Data;
+﻿using System.Security.Claims;
+using BlazorInvoiceApp.Data;
 using BlazorInvoiceApp.DTOS;
-using System.Security.Claims;
 
 namespace BlazorInvoiceApp.Repository;
 
@@ -13,5 +13,4 @@ public interface IGenericOwnedRepository<TEntity, TDTO>
     Task<string> AddMine(ClaimsPrincipal? User, TDTO dto);
     Task<TDTO?> UpdateMine(ClaimsPrincipal? User, TDTO dto);
     Task<bool> DeleteMine(ClaimsPrincipal? User, string id);
-
 }

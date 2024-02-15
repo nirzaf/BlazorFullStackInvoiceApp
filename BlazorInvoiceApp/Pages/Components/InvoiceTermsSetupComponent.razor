@@ -6,14 +6,14 @@
 <AuthorizeView>
     <Authorized>
         <div class="text-danger">@Message</div>
-        <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" class="mt-2 mb-4" Text="Add New Terms Type" Click="@InsertRow" Disabled=@(termsToInsert != null || termsToUpdate != null) />
+        <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" class="mt-2 mb-4" Text="Add New Terms Type" Click="@InsertRow" Disabled="@(termsToInsert != null || termsToUpdate != null)"/>
         <RadzenDataGrid @ref="termsGrid" AllowAlternatingRows="false" AllowSorting="true" EditMode="DataGridEditMode.Single"
                         Data="@terms" TItem="InvoiceTermsDTO" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" Sort="@Reset" ColumnWidth="200px">
             <Columns>
                 <RadzenDataGridColumn TItem="InvoiceTermsDTO" Property="Name" Title="Name" Width="200px">
                     <EditTemplate Context="terms">
-                        <RadzenTextBox @bind-Value="terms.Name" Style="width:100%; display: block" Name="Name" />
-                        <RadzenRequiredValidator Text="Name is Required" Component="Name" Popup="true" />
+                        <RadzenTextBox @bind-Value="terms.Name" Style="width:100%; display: block" Name="Name"/>
+                        <RadzenRequiredValidator Text="Name is Required" Component="Name" Popup="true"/>
                     </EditTemplate>
                 </RadzenDataGridColumn>
 
@@ -25,9 +25,9 @@
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="terms">
-                        <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(terms))">
+                        <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => SaveRow(terms))">
                         </RadzenButton>
-                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(terms))">
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => CancelEdit(terms))">
                         </RadzenButton>
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(terms))">
                         </RadzenButton>
@@ -133,4 +133,5 @@
         this.terms = await repo.InvoiceTerms.GetAllMine(auth.User);
         termsToInsert = null;
     }
+
 }
