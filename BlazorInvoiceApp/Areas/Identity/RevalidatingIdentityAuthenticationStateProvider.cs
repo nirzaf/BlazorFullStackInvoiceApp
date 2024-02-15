@@ -1,8 +1,8 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using System.Security.Claims;
 
 namespace BlazorInvoiceApp.Areas.Identity;
 
@@ -21,7 +21,7 @@ public class RevalidatingIdentityAuthenticationStateProvider<TUser>(
         AuthenticationState authenticationState, CancellationToken cancellationToken)
     {
         // Get the user manager from a new scope to ensure it fetches fresh data
-        var scope = scopeFactory.CreateScope();
+        IServiceScope scope = scopeFactory.CreateScope();
         try
         {
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<TUser>>();
@@ -30,23 +30,19 @@ public class RevalidatingIdentityAuthenticationStateProvider<TUser>(
         finally
         {
             if (scope is IAsyncDisposable asyncDisposable)
-            {
                 await asyncDisposable.DisposeAsync();
-            }
             else
-            {
                 scope.Dispose();
-            }
         }
     }
 
     private async Task<bool> ValidateSecurityStampAsync(UserManager<TUser> userManager, ClaimsPrincipal principal)
     {
-        var user = await userManager.GetUserAsync(principal);
+        TUser? user = await userManager.GetUserAsync(principal);
         if (user == null) return false;
         if (!userManager.SupportsUserSecurityStamp) return true;
-        var principalStamp = principal.FindFirstValue(_options.ClaimsIdentity.SecurityStampClaimType);
-        var userStamp = await userManager.GetSecurityStampAsync(user);
+        string? principalStamp = principal.FindFirstValue(_options.ClaimsIdentity.SecurityStampClaimType);
+        string userStamp = await userManager.GetSecurityStampAsync(user);
         return principalStamp == userStamp;
     }
 }
