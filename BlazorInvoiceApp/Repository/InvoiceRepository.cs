@@ -24,9 +24,11 @@ public class InvoiceRepository(ApplicationDbContext context, IMapper mapper)
     public async Task<List<InvoiceDTO>> GetAllMineFlat(ClaimsPrincipal? User)
     {
         string? userid = getMyUserId(User);
-        var q = from i in context.Invoices.Where(i => i.UserId == userid).Include(i => i.InvoiceLineItems)
-                .Include(i => i.InvoiceTerms).Include(i => i.Customer)
-            select new InvoiceDTO
+        var q = context.Invoices.Where(i => i.UserId == userid)
+            .Include(i => i.InvoiceLineItems)
+            .Include(i => i.InvoiceTerms)
+            .Include(i => i.Customer)
+            .Select(i => new InvoiceDTO
             {
                 Id = i.Id,
                 CreateDate = i.CreateDate,
@@ -41,9 +43,8 @@ public class InvoiceRepository(ApplicationDbContext context, IMapper mapper)
                 TaxRate = i.TaxRate,
                 UserId = i.UserId,
                 InvoiceTotal = i.InvoiceLineItems.Sum(a => a.TotalPrice)
-            };
-
-
+            });
+        
         List<InvoiceDTO> results = await q.ToListAsync();
         return results;
     }
